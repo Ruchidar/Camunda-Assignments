@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_088g2hd" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.7.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.18.0">
+  <bpmn:process id="Process_0n9o62r" name="Visa Interview Signal &#38; Message Event 2" isExecutable="true">
+    <bpmn:sequenceFlow id="Flow_1fo2zxt" sourceRef="StartEvent_1" targetRef="Activity_16rlxm7" />
+    <bpmn:userTask id="Activity_16rlxm7" name="Take Interview" camunda:assignee="demo">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="approval" label="Satisfied or Not Satisfied" type="enum">
+            <camunda:value id="approved" name="Approved" />
+            <camunda:value id="rejected" name="Rejected" />
+          </camunda:formField>
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1fo2zxt</bpmn:incoming>
+      <bpmn:outgoing>Flow_02qrpgr</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_0e5q5r2">
+      <bpmn:incoming>Flow_02qrpgr</bpmn:incoming>
+      <bpmn:outgoing>Flow_051yxtx</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0s7gkr5</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_02qrpgr" sourceRef="Activity_16rlxm7" targetRef="Gateway_0e5q5r2" />
+    <bpmn:sequenceFlow id="Flow_051yxtx" sourceRef="Gateway_0e5q5r2" targetRef="Event_0p714xq">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${approval=="approved"}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0s7gkr5" sourceRef="Gateway_0e5q5r2" targetRef="Event_1707ata">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${approval=="rejected"}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:startEvent id="StartEvent_1" name="Call Visa Applicant">
+      <bpmn:outgoing>Flow_1fo2zxt</bpmn:outgoing>
+      <bpmn:signalEventDefinition id="SignalEventDefinition_1jjbywx" signalRef="Signal_1dbmbbr" />
+    </bpmn:startEvent>
+    <bpmn:intermediateThrowEvent id="Event_0p714xq" name="Visa Approved Message">
+      <bpmn:incoming>Flow_051yxtx</bpmn:incoming>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_137nvi8" messageRef="Message_3urc4je" camunda:expression="${execution.getProcessEngineServices().getRuntimeService().createMessageCorrelation(&#34;Message_3urc4je&#34;).correlateWithResult()}">
+        <bpmn:extensionElements />
+      </bpmn:messageEventDefinition>
+    </bpmn:intermediateThrowEvent>
+    <bpmn:intermediateThrowEvent id="Event_1707ata" name="Visa Rejected Message">
+      <bpmn:incoming>Flow_0s7gkr5</bpmn:incoming>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0n0y9de" messageRef="Message_3i2d26c" camunda:expression="${execution.getProcessEngineServices().getRuntimeService().createMessageCorrelation(&#34;Message_3i2d26c&#34;).correlateWithResult()}">
+        <bpmn:extensionElements />
+      </bpmn:messageEventDefinition>
+    </bpmn:intermediateThrowEvent>
+  </bpmn:process>
+  <bpmn:signal id="Signal_1dbmbbr" name="visa_officer" />
+  <bpmn:message id="Message_10q4dv4" name="VisaApproved" />
+  <bpmn:message id="Message_1o7174t" name="VisaRejected" />
+  <bpmn:message id="Message_3k2100p" name="visaapproved" />
+  <bpmn:message id="Message_0r2ltp1" name="visarejected" />
+  <bpmn:message id="Message_3urc4je" name="Message_3urc4je" />
+  <bpmn:message id="Message_3i2d26c" name="Message_3i2d26c" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_0n9o62r">
+      <bpmndi:BPMNShape id="Activity_0jby0oi_di" bpmnElement="Activity_16rlxm7">
+        <dc:Bounds x="270" y="137" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0e5q5r2_di" bpmnElement="Gateway_0e5q5r2" isMarkerVisible="true">
+        <dc:Bounds x="425" y="152" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0yxyv0h_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="159" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="176" y="202" width="46" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_05vdlsh_di" bpmnElement="Event_0p714xq">
+        <dc:Bounds x="622" y="82" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="605" y="125" width="71" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_002x3m5_di" bpmnElement="Event_1707ata">
+        <dc:Bounds x="622" y="242" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="607" y="285" width="68" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1fo2zxt_di" bpmnElement="Flow_1fo2zxt">
+        <di:waypoint x="215" y="177" />
+        <di:waypoint x="270" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_02qrpgr_di" bpmnElement="Flow_02qrpgr">
+        <di:waypoint x="370" y="177" />
+        <di:waypoint x="425" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_051yxtx_di" bpmnElement="Flow_051yxtx">
+        <di:waypoint x="450" y="152" />
+        <di:waypoint x="450" y="100" />
+        <di:waypoint x="622" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0s7gkr5_di" bpmnElement="Flow_0s7gkr5">
+        <di:waypoint x="450" y="202" />
+        <di:waypoint x="450" y="260" />
+        <di:waypoint x="622" y="260" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

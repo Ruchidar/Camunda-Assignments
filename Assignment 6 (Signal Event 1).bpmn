@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_02tgdga" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.7.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.18.0">
+  <bpmn:process id="Process_1wk8906" name="Visa Interview Signal Event" isExecutable="true">
+    <bpmn:startEvent id="Event_0yxy1al" name="Enter Visa Office">
+      <bpmn:outgoing>Flow_0b1dpmw</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_0b1dpmw" sourceRef="Event_0yxy1al" targetRef="Activity_1k41598" />
+    <bpmn:userTask id="Activity_1k41598" name="Give Visa Application Details" camunda:assignee="demo">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="name" label="Enter Name" type="string" />
+          <camunda:formField id="passport" label="Enter Passport Number" type="long" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0b1dpmw</bpmn:incoming>
+      <bpmn:outgoing>Flow_0x67w9c</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_0x67w9c" sourceRef="Activity_1k41598" targetRef="Event_1lm62gg" />
+    <bpmn:intermediateThrowEvent id="Event_1lm62gg" name="Wait for visa Officer to call">
+      <bpmn:incoming>Flow_0x67w9c</bpmn:incoming>
+      <bpmn:outgoing>Flow_086cuyj</bpmn:outgoing>
+      <bpmn:signalEventDefinition id="SignalEventDefinition_09os01l" signalRef="Signal_3jpprnu" />
+    </bpmn:intermediateThrowEvent>
+    <bpmn:sequenceFlow id="Flow_086cuyj" sourceRef="Event_1lm62gg" targetRef="Activity_0o6usav" />
+    <bpmn:endEvent id="Event_13tjpld" name="Exit Visa Office">
+      <bpmn:incoming>Flow_1spomnj</bpmn:incoming>
+      <bpmn:incoming>Flow_1wh36xs</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1spomnj" sourceRef="Activity_0o6usav" targetRef="Event_13tjpld" />
+    <bpmn:sequenceFlow id="Flow_1wh36xs" sourceRef="Activity_0o6usav" targetRef="Event_13tjpld" />
+    <bpmn:scriptTask id="Activity_0o6usav" name="Interview Completed" scriptFormat="groovy">
+      <bpmn:incoming>Flow_086cuyj</bpmn:incoming>
+      <bpmn:outgoing>Flow_1spomnj</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1wh36xs</bpmn:outgoing>
+      <bpmn:script>println("Interview Completed")</bpmn:script>
+    </bpmn:scriptTask>
+  </bpmn:process>
+  <bpmn:signal id="Signal_3jpprnu" name="visa_officer" />
+  <bpmn:message id="Message_3pa62je" name="Visa Approved" />
+  <bpmn:message id="Message_11kfdaq" name="VisaRejected" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1wk8906">
+      <bpmndi:BPMNShape id="Event_0yxy1al_di" bpmnElement="Event_0yxy1al">
+        <dc:Bounds x="192" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="170" y="145" width="83" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_03vqyap_di" bpmnElement="Activity_1k41598">
+        <dc:Bounds x="280" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_19livgr_di" bpmnElement="Event_1lm62gg">
+        <dc:Bounds x="432" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="419" y="145" width="64" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_13tjpld_di" bpmnElement="Event_13tjpld">
+        <dc:Bounds x="732" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="713" y="145" width="75" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0fg8h3z_di" bpmnElement="Activity_0o6usav">
+        <dc:Bounds x="520" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0b1dpmw_di" bpmnElement="Flow_0b1dpmw">
+        <di:waypoint x="228" y="120" />
+        <di:waypoint x="280" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0x67w9c_di" bpmnElement="Flow_0x67w9c">
+        <di:waypoint x="380" y="120" />
+        <di:waypoint x="432" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_086cuyj_di" bpmnElement="Flow_086cuyj">
+        <di:waypoint x="468" y="120" />
+        <di:waypoint x="520" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1spomnj_di" bpmnElement="Flow_1spomnj">
+        <di:waypoint x="620" y="120" />
+        <di:waypoint x="732" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1wh36xs_di" bpmnElement="Flow_1wh36xs">
+        <di:waypoint x="620" y="120" />
+        <di:waypoint x="732" y="120" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
